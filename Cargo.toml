@@ -1,0 +1,19 @@
+[package]
+name = "yassg"
+version = "0.1.0"
+authors = ["Rafał Baran <rafal06@duck.com>"]
+edition = "2021"
+description = "Yet another (another) (simple) static site generator"
+readme = "README.md"
+homepage = "https://github.com/rafal06/yassg"
+repository = "https://github.com/rafal06/yassg"
+license = "MIT"
+keywords = ["web", "site-generator", "simple", "ssg"]
+categories = ["command-line-utilities"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0.69"
+lazy_static = "1.4.0"
+regex = "1.7.1"
