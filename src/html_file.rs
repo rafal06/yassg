@@ -33,7 +33,7 @@ impl HtmlFile {
     pub fn insert_components(&self, components: &HashMap<String, Component>) -> Self {
         // 1st capture group: component name
         // 2nd capture group: component parameters
-        let re = Regex::new(r#"<([A-Z][0-z]*) +([0-z]+=".*?")? */>"#).unwrap();
+        let re = Regex::new(r#"<([A-Z][0-z]*)\s+([0-z]+="[\s\S]*?")\s*/>"#).unwrap();
 
 
         let file_content = self.content.clone();
