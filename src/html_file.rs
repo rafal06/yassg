@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use lazy_static::lazy_static;
 use regex::{Captures, Regex};
 use crate::component::Component;
 
@@ -31,13 +32,13 @@ impl HtmlFile {
     /// // </div>
     /// ```
     pub fn insert_components(&self, components: &HashMap<String, Component>) -> Self {
-        // 1st capture group: component name
-        // 2nd capture group: component parameters
-        let re = Regex::new(r#"<([A-Z][0-z]*)\s+([0-z]+="[\s\S]*?")\s*/>"#).unwrap();
+        lazy_static!(
+            // 1st capture group: component name
+            // 2nd capture group: component parameters
+            static ref TAG_RE: Regex = Regex::new(r#"<([A-Z][0-z]*)\s+([0-z]+="[\s\S]*?")\s*/>"#).unwrap();
+        );
 
-
-        let file_content = self.content.clone();
-        let file_content = re.replace_all(&file_content, |caps: &Captures| {
+        let file_content = TAG_RE.replace_all(&self.content, |caps: &Captures| {
             let comp_name = &caps[1];
             let params = &caps[2];
             
