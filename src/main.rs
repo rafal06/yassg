@@ -7,30 +7,35 @@ mod test;
 use component::Component;
 use html_file::HtmlFile;
 
-use std::{env, fs, process};
-use std::path::Path;
+use std::{fs, process};
+use std::env::current_dir;
+use std::path::{Path, PathBuf};
+
 use anyhow::Result;
+use clap::Parser;
+
+#[derive(Parser, Debug)]
+#[command(author, version, about, long_about = None)]
+struct Args {
+    /// Path of the project to compile
+    path: PathBuf,
+}
 
 fn main() {
-    let args: Vec<String> = env::args().collect();
-    if args.len() < 2 {
-        eprintln!("Please specify the project directory (use a dot for the current directory)");
-        process::exit(1);
-    }
+    let args = Args::parse();
 
-    if args[1].as_str() == "." {
-        println!("Generating a site from the current directory...");
-    } else {
-        println!("Generating a site from {}...", &args[1].as_str());
-    }
-    
-    let path = Path::new(&args[1]);
-    if !path.is_dir() {
+    if !&args.path.is_dir() {
         eprintln!("The specified directory does not exist");
         process::exit(1);
     }
-
-    if let Err(e) = generate_site(path) {
+    
+    if args.path == current_dir().unwrap() {
+        println!("Generating a site from the current directory...");
+    } else {
+        println!("Generating a site from {}...", &args.path.display());
+    }
+    
+    if let Err(e) = generate_site(&args.path) {
         println!("Error generating the site: {:?}", e);
     } else {
         println!("Done!");
