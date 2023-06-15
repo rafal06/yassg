@@ -1,11 +1,13 @@
 mod component;
 mod html_file;
+mod helpers;
 
 #[cfg(test)]
 mod test;
 
 use component::Component;
 use html_file::HtmlFile;
+use helpers::copy_directory;
 
 use std::{fs, process};
 use std::env::current_dir;
