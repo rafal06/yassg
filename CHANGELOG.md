@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Implement proper CLI, with help, version info, etc.
 
+### Fixed
+- Fix detecting component tags with no parameters
+
 ## 0.1.1 - 2023-02-18
 ### Fixed
 - Fix detecting component tags with line breaks

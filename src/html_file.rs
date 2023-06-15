@@ -35,12 +35,12 @@ impl HtmlFile {
         lazy_static!(
             // 1st capture group: component name
             // 2nd capture group: component parameters
-            static ref TAG_RE: Regex = Regex::new(r#"<([A-Z][0-z]*)\s+([0-z]+="[\s\S]*?")\s*/>"#).unwrap();
+            static ref TAG_RE: Regex = Regex::new(r#"<([A-Z][0-z]*)\s+([0-z]+="[\s\S]*?")*\s*/>"#).unwrap();
         );
 
         let file_content = TAG_RE.replace_all(&self.content, |caps: &Captures| {
             let comp_name = &caps[1];
-            let params = &caps[2];
+            let params = caps.get(2).map_or("", |m| m.as_str());
             
             let comp = match components.get(comp_name) {
                 Some(comp) => comp.insert_variables(params),
