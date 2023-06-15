@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Fix detecting component tags with no parameters
+- Fix text shown on generating a site from the current directory
 
 ## 0.1.1 - 2023-02-18
 ### Fixed

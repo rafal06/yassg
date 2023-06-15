@@ -41,7 +41,7 @@ fn main() {
         process::exit(1);
     }
 
-    if args.path == current_dir().unwrap() {
+    if args.path.canonicalize().unwrap() == current_dir().unwrap() {
         println!("Generating a site from the current directory...");
     } else {
         println!("Generating a site from {}...", &args.path.display());
