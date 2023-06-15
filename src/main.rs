@@ -47,6 +47,10 @@ fn generate_site(path: &Path) -> Result<()> {
     let components = Component::get_components(&path.join("components"));
     fs::create_dir(path.join("dist")).ok();
 
+    if path.join("public").exists() {
+        copy_directory(&path.join("public"), &path.join("dist/public"))?;
+    }
+
     for entry in path.read_dir()? {
         let entry = entry?;
         let filename = entry.file_name().to_string_lossy().to_string();

@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Implement proper CLI, with help, version info, etc.
+- Include a `public` directory in the built site
 
 ### Fixed
 - Fix detecting component tags with no parameters
