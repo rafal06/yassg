@@ -46,6 +46,7 @@ impl Component {
         let mut comp_content = self.content.clone();
 
         for cap in RE_EXTRACT_VARS.captures_iter(variables_str) {
+            log::info!("Inserting variable {}", &cap[1]);
             let pattern = format!("{{{{{}}}}}", &cap[1]);
             comp_content = comp_content.replace(&pattern, &cap[2]);
         }
@@ -64,9 +65,10 @@ impl Component {
             
             let component_name = filename.replace(".html", "");
             if !component_name.chars().next().unwrap().is_uppercase() {
-                println!("Component name \"{}\"  doesn't start with an uppercase letter, ignoring...", &component_name);
+                log::warn!("Component name \"{}\"  doesn't start with an uppercase letter, ignoring...", &component_name);
+                continue;
             }
-            // log::info!("Detected component {}", &component_name);
+            log::info!("Detected component {}", &component_name);
 
             if let Ok(mut file) = File::open(file.path()) {
                 let mut file_content = String::new();

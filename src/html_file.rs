@@ -43,9 +43,12 @@ impl HtmlFile {
             let params = caps.get(2).map_or("", |m| m.as_str());
             
             let comp = match components.get(comp_name) {
-                Some(comp) => comp.insert_variables(params),
+                Some(comp) => {
+                    log::info!("Inserting component {} into {}", comp_name, &self.name);
+                    comp.insert_variables(params)
+                },
                 None => {
-                    eprintln!("Invalid component name: {}", comp_name);
+                    log::error!("Invalid component name {} in file {}", comp_name, &self.name);
                     Component::invalid(comp_name)
                 },
             };
