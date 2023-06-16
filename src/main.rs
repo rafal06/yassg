@@ -55,16 +55,18 @@ fn main() {
 }
 
 /// Generate site from a given directory
-fn generate_site(path: &Path) -> Result<()> {
-    let components = Component::get_components(&path.join("components"));
-    fs::create_dir(path.join("dist")).ok();
+fn generate_site(root_path: &Path) -> Result<()> {
+    let output_dir = root_path.join("dist");
+    fs::create_dir(&output_dir).ok();
 
-    if path.join("public").exists() {
+    if root_path.join("public").exists() {
         log::info!("Copying the public directory");
-        copy_directory(&path.join("public"), &path.join("dist/public"))?;
+        copy_directory(&root_path.join("public"), &output_dir.join("public"))?;
     }
 
-    for entry in path.read_dir()? {
+    let components = Component::get_components(&root_path.join("components"));
+
+    for entry in root_path.read_dir()? {
         let entry = entry?;
         let filename = entry.file_name().to_string_lossy().to_string();
         if !&filename.ends_with(".html") {
@@ -76,9 +78,7 @@ fn generate_site(path: &Path) -> Result<()> {
 
         let file = HtmlFile::new(filename.clone(), content)
             .insert_components(&components);
-        let mut output_path = path
-            .join("dist")
-            .join(file.name);
+        let mut output_path = output_dir.join(file.name);
         output_path.set_extension("html");
 
         log::info!("Writing dist/{}", &filename);
