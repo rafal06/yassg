@@ -56,6 +56,8 @@ fn main() {
 
 /// Generate site from a given directory
 fn generate_site(root_path: &Path) -> Result<()> {
+    let source_dir = root_path.join("src");
+
     let output_dir = root_path.join("dist");
     fs::create_dir(&output_dir).ok();
 
@@ -64,9 +66,10 @@ fn generate_site(root_path: &Path) -> Result<()> {
         copy_directory(&root_path.join("public"), &output_dir.join("public"))?;
     }
 
-    let components = Component::get_components(&root_path.join("components"));
+    let components = Component::get_components(&source_dir.join("components"));
 
-    for entry in root_path.read_dir()? {
+    log::info!("Reading the src directory");
+    for entry in source_dir.read_dir()? {
         let entry = entry?;
         let filename = entry.file_name().to_string_lossy().to_string();
         if !&filename.ends_with(".html") {
