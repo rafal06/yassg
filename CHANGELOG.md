@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Implement proper CLI, with help, version info, etc.
 - Include a `public` directory in the built site
 - Implement logger and a verbosity flag
+- Add a `--watch` flag to automatically rebuild the project on file change
 
 ### Changed
 - [**Breaking**] Look for HTML files in `src/` directory instead of the project root   

@@ -11,17 +11,26 @@ use helpers::copy_directory;
 
 use std::{fs, process};
 use std::env::current_dir;
-
 use std::path::{Path, PathBuf};
+use std::process::exit;
+
 use anyhow::Result;
 use clap::Parser;
 use clap_verbosity_flag::{Verbosity, WarnLevel};
+use hotwatch::{
+    blocking::{Flow, Hotwatch},
+    EventKind,
+};
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 struct Args {
     /// Path of the project to compile
     path: PathBuf,
+
+    /// Watch the directory for changes
+    #[arg(short, long)]
+    watch: bool,
 
     #[clap(flatten)]
     verbose: Verbosity<WarnLevel>,
@@ -38,7 +47,7 @@ fn main() {
 
     if !&args.path.is_dir() {
         eprintln!("The specified directory does not exist");
-        process::exit(1);
+        exit(1);
     }
 
     if args.path.canonicalize().unwrap() == current_dir().unwrap() {
@@ -49,8 +58,23 @@ fn main() {
 
     if let Err(e) = generate_site(&args.path) {
         println!("Error generating the site: {:?}", e);
+        exit(1);
     } else {
         println!("Done!");
+    }
+
+    if args.watch {
+        let mut watcher = Hotwatch::new().unwrap();
+        watcher.watch("src", move |event| {
+            if let EventKind::Modify(_) = event.kind {
+                println!("Modified {}, rebuilding...", event.paths[0].file_name().unwrap().to_str().unwrap());
+                generate_site(&args.path).unwrap_or_else(|e| {
+                    println!("Error generating the site: {:?}", e);
+                });  // TODO: Rebuild just the modified components and pages
+            }
+            Flow::Continue
+        }).unwrap();
+        watcher.run();
     }
 }
 
