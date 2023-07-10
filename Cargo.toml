@@ -1,6 +1,6 @@
 [package]
 name = "yassg"
-version = "0.1.1"
+version = "0.2.0"
 authors = ["Rafał Baran <rafal06@duck.com>"]
 edition = "2021"
 description = "Yet another (another) (simple) static site generator"
