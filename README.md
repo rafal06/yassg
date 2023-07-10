@@ -6,6 +6,7 @@ Features include:
 - Custom components
 - Compiling to plain HTML
 - Multiple pages
+- Watching for file changes
 
 ## Installation
 
@@ -18,7 +19,14 @@ If you want to install the unreleased version from Git, clone this repo, and the
 ## Getting started
 
 ### Project structure
-Create a folder for your project. In the root, create a file `index.html` and a folder named `components`.
+Create a folder for your project. In the new `src` directory, create a file `index.html` and a folder named `components`.  
+The file structure should look like this:
+```
+my-project
+└── src
+   ├── components
+   └── index.html
+```
 
 ### Components and variables
 Inside the `components` folder, create a file `Greeting.html`, or whatever name you'd like. It must start with an uppercase letter and not contain a space. PascalCase is recommended.
@@ -49,6 +57,9 @@ Remember the name we gave to the file in the components directory? We use the sa
 After we added some code, we can run Yassg to compile it. 
 
     $ yassg .
+
+> **Info**  
+> If you want Yassg to automatically rebuild the project when you change something, pass in the `--watch` flag
 	
 It will read all component files, and place them inside the `index.html` file, with the assigned variables, resulting in the following output in the `dist` directory:
 ```html
