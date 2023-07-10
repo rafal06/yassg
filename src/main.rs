@@ -9,7 +9,7 @@ use component::Component;
 use html_file::HtmlFile;
 use helpers::copy_directory;
 
-use std::{fs, process};
+use std::fs;
 use std::env::current_dir;
 use std::path::{Path, PathBuf};
 use std::process::exit;
